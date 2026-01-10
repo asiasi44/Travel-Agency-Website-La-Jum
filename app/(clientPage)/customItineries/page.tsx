@@ -1,4 +1,4 @@
-import ItinerayBox from "@/app/components/ItineryBox"
+import ItinerayBox from "@/components/ItineryBox"
 const CustomItineries = () => {
     return (
         <div className=" px-24 py-8 flex gap-8 flex-col">

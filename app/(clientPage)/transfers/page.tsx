@@ -1,6 +1,6 @@
 import { IoIosArrowBack } from "react-icons/io";
 import { BiBus } from "react-icons/bi";
-import TransferBox from "../../components/TransferBox";
+import TransferBox from "@/components/TransferBox";
 import Link from "next/link";
 
 const TransfersPage = () => {

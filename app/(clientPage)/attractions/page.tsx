@@ -1,4 +1,4 @@
-import AttractionsBox from "@/app/components/AttractionsBox";
+import AttractionsBox from "@/components/AttractionsBox";
 import Link from "next/link";
 
 //@ts-nocheck

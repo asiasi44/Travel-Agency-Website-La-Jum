@@ -1,5 +1,5 @@
 import { IoIosArrowBack } from "react-icons/io";
-import HotelBox from "../../components/HotelBox";
+import HotelBox from "@/components/HotelBox";
 import Link from "next/link";
 
 const Hotels = () => {
