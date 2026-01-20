@@ -1,51 +1,33 @@
-import dbConnect from "@/lib/database/mongodb";
-import { CountryType } from "@/lib/formSchemas/countries/schema";
+import { CountryType } from "@/lib/clientSchema/countries/schema";
 import Country from "@/models/CountryModel";
 import { NextRequest, NextResponse } from "next/server";
+import { Params, withErrorHandler } from "@/lib/errorHandler";
 
-export async function POST(request: NextRequest) {
-  try {
-    await dbConnect();
-    const body = await request.json();
+export const POST = withErrorHandler<Params>(async function (
+  request: NextRequest,
+  { params }: Params,
+) {
+  const body = await request.json();
 
-    const createdCountry = await Country.create({
-      name: body.name,
-    });
+  const createdCountry = await Country.create({
+    name: body.name,
+  });
 
-    const data: CountryType = createdCountry.toJSON() as CountryType;
+  const data: CountryType = createdCountry.toJSON() as CountryType;
 
-    return NextResponse.json({
-      success: true,
-      country: data,
-    });
-  } catch (error: any) {
-    return NextResponse.json(
-      {
-        success: false,
-        error: error,
-        message: error?.message ?? "Some Error Occured",
-      },
-      { status: 500 }
-    );
-  }
-}
+  return NextResponse.json({
+    success: true,
+    addedCountry: data,
+  });
+});
 
-export async function GET(request: NextRequest) {
-  try {
-    await dbConnect();
-    const fetchedCountries = await Country.find({});
-    return NextResponse.json({
-      success: true,
-      countries: fetchedCountries,
-    });
-  } catch (error) {
-    console.log(error);
-    return NextResponse.json(
-      {
-        success: false,
-        error,
-      },
-      { status: 500 }
-    );
-  }
-}
+export const GET = withErrorHandler<Params>(async function (
+  request: NextRequest,
+  { params }: Params,
+) {
+  const fetchedCountries = await Country.find({});
+  return NextResponse.json({
+    success: true,
+    countries: fetchedCountries,
+  });
+});

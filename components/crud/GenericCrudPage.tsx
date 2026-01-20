@@ -1,0 +1,30 @@
+import { CrudConfig } from "@/lib/clientSchema/crud/schema";
+import FormDialog from "@/components/crud/form/FormDialog";
+import { FieldValues } from "react-hook-form";
+import { GenericTableSection } from "@/components/crud/table/GenericTableSection";
+import { useState } from "react";
+
+const GenericCrudPage = <TForm extends FieldValues, TRow>({
+  config,
+}: {
+  config: CrudConfig<TForm, TRow>;
+}) => {
+  const [editData, setEditData] = useState<TForm | null>(null);
+  const [resetKey, setResetKey] = useState(0);
+  return (
+    <div className="py-8 px-12 flex flex-col gap-12">
+      <div className="flex justify-between">
+        <div className="text-3xl font-bold">{config.entityNamePlural}</div>
+        <FormDialog
+          config={config}
+          editData={editData}
+          setEditData={setEditData}
+          resetKey={resetKey}
+        />
+      </div>
+      <GenericTableSection config={config} setEditData={setEditData} />
+    </div>
+  );
+};
+
+export default GenericCrudPage;

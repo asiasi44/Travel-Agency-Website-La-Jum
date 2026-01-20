@@ -1,53 +1,21 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import {
-  createCountry,
-  deleteCountry,
-  getAllCountries,
-  updateCountry,
-} from "../apiClient/country";
+import { getCountryColumns } from "../clientSchema/countries/columns";
+import { CountryType } from "../clientSchema/countries/schema";
+import { createCrudHooks, createCrudTableHook } from "./useCrudHooks";
 
-export function useCreateCountry() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: createCountry,
-    onSuccess: (response) => {
-      queryClient.invalidateQueries({ queryKey: ["countries"] });
-    },
-    onError: (error) => {
-      console.log(error);
-    },
-  });
-}
+const countryCrud = createCrudHooks<CountryType>({
+  endpoint: "country",
+  queryKey: "countries",
+});
 
-export function useGetAllCountries() {
-  return useQuery({
-    queryKey: ["countries"],
-    queryFn: getAllCountries,
-  });
-}
+export const {
+  useGetAll: useGetAllCountries,
+  useCreate: useCreateCountry,
+  useUpdate: useUpdateCountry,
+  useDelete: useDeleteCountry,
+} = countryCrud;
 
-export function useUpdateCountry() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: updateCountry,
-    onSuccess: (response) => {
-      queryClient.invalidateQueries({ queryKey: ["countries"] });
-    },
-    onError: (error) => {
-      console.log(error);
-    },
-  });
-}
-
-export function useDeleteCountry() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: deleteCountry,
-    onSuccess: (response) => {
-      queryClient.invalidateQueries({ queryKey: ["countries"] });
-    },
-    onError: (error) => {
-      console.log(error);
-    },
-  });
-}
+export const useCountryTable = createCrudTableHook<CountryType>({
+  useGetAll: useGetAllCountries,
+  getColumns: getCountryColumns,
+  dataKey: "countries",
+});

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CountryType } from "../formSchemas/countries/schema";
+import { CountryType } from "../clientSchema/countries/schema";
 
 export async function createCountry(data: CountryType) {
   const response = await axios.post("/api/country", data);

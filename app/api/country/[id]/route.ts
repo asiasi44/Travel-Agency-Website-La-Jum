@@ -1,4 +1,5 @@
-import { CountryType } from "@/lib/formSchemas/countries/schema";
+import { CountryType } from "@/lib/clientSchema/countries/schema";
+import dbConnect from "@/lib/database/mongodb";
 import Country from "@/models/CountryModel";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -10,9 +11,10 @@ export async function PATCH(
     params: Promise<{
       id: string;
     }>;
-  }
+  },
 ) {
   try {
+    await dbConnect();
     const body = await request.json();
     const { id } = await params;
     const updatedCountry = await Country.findByIdAndUpdate(id, body);
@@ -30,14 +32,14 @@ export async function PATCH(
         success: false,
         error,
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const { id } = await params;
